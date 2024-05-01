@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "assets/*": [
+                "/src/assets/*"
+            ],
+            "section/*": [
+                "/src/section/*"
+            ],
+            "common/*": [
+                "/src/common/*"
+            ],
+            "utils/*": [
+                "/src/utils/*"
+            ],
+            "lib/*": [
+                "/src/lib/*"
+            ]
+        }
+    }
+}

@@ -1,0 +1,4 @@
+smart contracts/contracts/Lock.sol
+smart contracts/scripts/mintNFTs.js
+smart contracts/scripts/createBarter.js
+smart contracts/scripts/createPool.js
