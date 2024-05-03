@@ -43,19 +43,19 @@ contract Exchange {
         address targetNFT;
         uint256 targetNumber; 
         address offeredNFT;
-        uint256[] offeredIds;
         bool sold;
     }
 
     mapping (uint256 => listing) public listings;
     mapping (uint256 => auction) public auctions;
     mapping (uint256 => barter) public barters;
+    mapping (uint256 => uint256[]) public offeredIds;
 
     constructor() {
         deployer = msg.sender;
     }
 
-    function createListing(uint256 price, uint256[] calldata tokenIds, address nftAddress) external isApproved(msg.sender, tokenIds, nftAddress){
+    function createListing(uint256 price, uint256[] calldata tokenIds, address nftAddress) external isApproved(msg.sender, nftAddress){
         uint256 id = _listingCount.current();
         listings[id].lister = msg.sender;
         listings[id].price = price;
@@ -71,7 +71,7 @@ contract Exchange {
         listings[listingId].sold = true;
     }
 
-    function createAuction(uint256 startPrice, address nftAddress, uint256[] calldata tokenIds) external isApproved(msg.sender, tokenIds, nftAddress) {
+    function createAuction(uint256 startPrice, address nftAddress, uint256[] calldata tokenIds) external isApproved(msg.sender, nftAddress) {
         uint256 id = _auctionCount.current();
         auctions[id].auctioner = msg.sender;
         auctions[id].startPrice = startPrice;
@@ -102,22 +102,22 @@ contract Exchange {
         payable(auctions[auctionId].auctioner).transfer(auctions[auctionId].bids[bidId].amount);
     }
 
-    function createBarter(address targetNFT, address offeredNFT, uint256[] calldata offeredIds, uint256 targetNumber) external isApproved(msg.sender, offeredIds, offeredNFT) {
+// isApproved(msg.sender, offeredIds, offeredNFT)
+    function createBarter(address targetNFT, address offeredNFT, uint256[] calldata _offeredIds, uint256 targetNumber) external  {
         uint256 id = _barterCount.current();
         barters[id].lister = msg.sender;
         barters[id].targetNFT = targetNFT;
         barters[id].targetNumber = targetNumber;
-        barters[id].offeredIds = offeredIds;
+        offeredIds[id] = _offeredIds;
         barters[id].offeredNFT = offeredNFT;
         barters[id].lister = msg.sender;
-        barters[id].offeredIds = offeredIds;
         _barterCount.increment();
     }
 
-    function fulfilBarter(uint256 barterId, uint256[] calldata tokenIds) external isApproved(msg.sender, tokenIds, barters[barterId].targetNFT) {
+    function fulfilBarter(uint256 barterId, uint256[] calldata tokenIds) external isApproved(msg.sender, barters[barterId].targetNFT) {
         require(tokenIds.length >= barters[barterId].targetNumber, "Invalid swap: offer more NFTs");
         batchTransfer(barters[barterId].targetNFT, msg.sender, tokenIds, barters[barterId].lister);
-        batchTransfer(barters[barterId].offeredNFT, barters[barterId].lister, barters[barterId].offeredIds, msg.sender);
+        batchTransfer(barters[barterId].offeredNFT, barters[barterId].lister, offeredIds[barterId], msg.sender);
         barters[barterId].sold = true;
     }
 
@@ -129,7 +129,7 @@ contract Exchange {
         }
     }
 
-    modifier isApproved(address owner, uint256[] calldata offeredIds, address offeredNFT) {
+    modifier isApproved(address owner, address offeredNFT) {
         IERC721 NFT = IERC721(offeredNFT);
         require(NFT.isApprovedForAll(owner, address(this)) == true, "Please approve the contract");
         _;

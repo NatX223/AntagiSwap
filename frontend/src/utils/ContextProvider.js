@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ModalContext } from "./ModalContext";
+// import CreateModal from "src/common/modal/createModal";
 
 const ContextProvider = ({ children }) => {
   const [visibility, setVisibility] = useState(false);
@@ -18,6 +19,9 @@ const ContextProvider = ({ children }) => {
     setVisibility(!visibility);
   };
   const AMMModalHandle = () => {
+    setVisibility(!visibility);
+  };
+  const CreateModalHandle = () => {
     setVisibility(!visibility);
   };
   const barterModalHandle = () => {
@@ -46,6 +50,7 @@ const ContextProvider = ({ children }) => {
         mintModalHandle,
         barterModalHandle,
         AMMModalHandle,
+        CreateModalHandle,
         walletModalHandle,
         walletModalvisibility,
         shareModalVisibility,

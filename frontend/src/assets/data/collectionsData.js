@@ -161,3 +161,9 @@ export const collections = [
     shrLiquidity: 90
   },
 ]
+
+export const createOptions = [
+  {id: 0, title: "Barter"},
+  {id: 1, title: "Listing"},
+  {id: 2, title: "AMM Pool"}
+]

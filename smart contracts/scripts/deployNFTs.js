@@ -1,20 +1,20 @@
 const hre = require("hardhat");
 
 async function main() {
-  // const digitaldreams = await hre.ethers.deployContract("DigitalDreams");
+  const digitaldreams = await hre.ethers.deployContract("DigitalDreams");
 
-  // await digitaldreams.waitForDeployment();
+  await digitaldreams.waitForDeployment();
 
-  // const shardverse = await hre.ethers.deployContract("ShardVerse");
+  const cantoverse = await hre.ethers.deployContract("CantoVerse");
 
-  // await shardverse.waitForDeployment();
+  await cantoverse.waitForDeployment();
 
-  const shardart = await hre.ethers.deployContract("ShardArt");
+  const cantart = await hre.ethers.deployContract("CantArt");
 
-  await shardart.waitForDeployment();
+  await cantart.waitForDeployment();
 
   console.log(
-    `ShardArt to ${shardart.target}`
+    `CantArt to ${cantart.target}, CantoVerse to ${cantoverse.target}, DigitalDreams to ${digitaldreams.target}`
   );
 }
 

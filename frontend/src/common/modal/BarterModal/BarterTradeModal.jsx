@@ -81,7 +81,7 @@ const BarterTradeModal = ({ id, targetCollection, offeredCollection }) => {
                 </ul>
               </div>
               <div className="modal_mint_btn">
-                <Button onClick={completeBarter()} lg variant="mint">
+                <Button onClick={completeBarter} lg variant="mint">
                   Buy
                 </Button>
               </div>

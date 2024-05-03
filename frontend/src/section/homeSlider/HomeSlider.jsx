@@ -9,7 +9,7 @@ import Banner from "section/banner/v5";
 import About from "section/about/v5";
 import Collection from "section/collection";
 import Barter from "section/Barter";
-import Mint from "section/mint/v1";
+import Create from "section/create";
 import AMM from "section/AMM";
 import MetamaskModal from "common/modal/metamaskModal/MetamaskModal";
 import MintNowModal from "common/modal/mintNowModal";
@@ -17,13 +17,15 @@ import WalletModal from "common/modal/walletModal/WalletModal";
 import StyleWrapper from "./StyleWrapper";
 import BarterTradeModal from "common/modal/BarterModal";
 import AMMModal from "common/modal/ammModal";
+import CreateModal from "common/modal/createModal";
 
 const HomeSlider = () => {
   const [isCollapse, setCollapse] = useState(true);
-  const { visibility, walletModalvisibility, metamaskModal, mintModalHandle, barterModalHandle, AMMModalHandle } = useModal();
+  const { visibility, walletModalvisibility, metamaskModal, mintModalHandle, barterModalHandle, AMMModalHandle, CreateModalHandle } = useModal();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedBarter, setSelectedBarter] = useState(null);
   const [selectedCollection, setSelectedCollection] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const handleProductClick = (product) => {
     setSelectedProduct(product);
@@ -38,6 +40,11 @@ const HomeSlider = () => {
   const handleCollectionClick = (barter) => {
     setSelectedCollection(barter);
     AMMModalHandle();
+  };
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+    CreateModalHandle();
   };
 
   const menuData = [
@@ -85,6 +92,7 @@ const HomeSlider = () => {
         {visibility && selectedProduct && <MintNowModal {...selectedProduct} />}
         {visibility && selectedBarter && <BarterTradeModal {...selectedBarter} />}
         {visibility && selectedCollection && <AMMModal {...selectedCollection} />}
+        {visibility && selectedOption && <CreateModal {...selectedOption} />}
         {walletModalvisibility && <WalletModal />}
         <Header />
         <StyleWrapper>
@@ -108,7 +116,7 @@ const HomeSlider = () => {
               <Collection handleProductClick={handleProductClick} />
             </SliderItem>
             <SliderItem>
-              <Mint />
+              <Create handleOptionClick={handleOptionClick} />
             </SliderItem>
           </Slider>
 
