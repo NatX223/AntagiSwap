@@ -3,3 +3,4 @@ smart contracts/scripts/mintNFTs.js
 smart contracts/scripts/createBarter.js
 smart contracts/scripts/createPool.js
 todo
+frontend/src/utils/test.js

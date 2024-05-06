@@ -4,7 +4,7 @@ import { FiX } from "react-icons/fi";
 import Button from "../../button";
 import MintModalStyleWrapper from "./Create.style";
 import hoverShape from "assets/images/icon/hov_shape_L.svg";
-import { createBarter, getUserNFTs } from "src/utils/app";
+import { createBarter, getUserNFTs, createPool } from "src/utils/app";
 import { useAccount } from "wagmi";
 import { useEthersSigner } from "src/utils/adapter";
 
@@ -22,9 +22,18 @@ const CreateModal = ({ id, title }) => {
   const [targetCollection, setTargetCollection] = useState('');
   const [amount, setAmount] = useState(1);
 
-  const create = async() => {
+  const [liquidity, setLiquidity] = useState('');
+  const [fee, setFee] = useState(1);
+
+  const createBarter = async() => {
     const Ids = selectedImages.map(obj => obj.id);
     await createBarter(targetCollection, selectedImages[0].nftAddress, Ids, amount, signer)
+    console.log("done");
+  }
+
+  const createAMMPool = async() => {
+    const Ids = selectedImages.map(obj => obj.id);
+    await createPool(Ids, selectedImages[0].nftAddress, liquidity, fee, signer);
     console.log("done");
   }
 
@@ -104,7 +113,7 @@ const CreateModal = ({ id, title }) => {
     </ul>
   </div>
   <div className="modal_mint_btn">
-    <Button lg variant="mint" onClick={create}>
+    <Button lg variant="mint" onClick={createBarter}>
       Create
     </Button>
   </div>
@@ -130,9 +139,9 @@ const CreateModal = ({ id, title }) => {
 <div className="modal_body text-center">
   <div className="col-lg-9 col-md-8">
     <div className="row barter_row">
-      {images?.map((image, idx) => (
+      {userNFTs?.map((image, idx) => (
         <div key={idx} className="col-lg-3 col-sm-6 col-12">
-          <img onClick={(e) => handleClick(image, e)} src={image} alt="image" style={{ border: selectedImages.includes(image) ? '2px solid blue' : '2px solid transparent' }} />
+          <img onClick={(e) => handleClick(image, e)} src={image.src} alt="image" style={{ border: selectedImages.includes(image) ? '2px solid blue' : '2px solid transparent' }} />
         </div>
       ))}
     </div>
@@ -178,9 +187,9 @@ const CreateModal = ({ id, title }) => {
 <div className="modal_body text-center">
   <div className="col-lg-9 col-md-8">
     <div className="row barter_row">
-      {images?.map((image, idx) => (
+      {userNFTs?.map((image, idx) => (
         <div key={idx} className="col-lg-3 col-sm-6 col-12">
-          <img onClick={(e) => handleClick(image, e)} src={image} alt="image" style={{ border: selectedImages.includes(image) ? '2px solid blue' : '2px solid transparent' }} />
+          <img onClick={(e) => handleClick(image, e)} src={image.src} alt="image" style={{ border: selectedImages.includes(image) ? '2px solid blue' : '2px solid transparent' }} />
         </div>
       ))}
     </div>
@@ -195,16 +204,16 @@ const CreateModal = ({ id, title }) => {
       </li>
       <li>
         <h5>Canto Liquidity</h5>
-        <input type="text" placeholder="Enter address" />
+        <input type="text" placeholder="Pool Liquidity" value={liquidity} onChange={(e) => setLiquidity(e.target.value)}/>
       </li>
       <li>
         <h5>Fee Percentage</h5>
-        <input type="number" placeholder="" />
+        <input type="number" placeholder="Fee Percentage" value={fee} onChange={(e) => setFee(e.target.value)}/>
       </li>
     </ul>
   </div>
   <div className="modal_mint_btn">
-    <Button lg variant="mint">
+    <Button lg variant="mint" onClick={createAMMPool}>
       Create
     </Button>
   </div>
