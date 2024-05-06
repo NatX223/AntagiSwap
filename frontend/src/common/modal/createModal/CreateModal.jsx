@@ -104,8 +104,8 @@ const CreateModal = ({ id, title }) => {
     </ul>
   </div>
   <div className="modal_mint_btn">
-    <Button lg variant="mint" >
-      <p onClick={create}> Create </p>
+    <Button lg variant="mint" onClick={create}>
+      Create
     </Button>
   </div>
 </div>

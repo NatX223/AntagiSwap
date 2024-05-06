@@ -39,7 +39,7 @@ const exchangeAbi = [
         ],
         "stateMutability": "view",
         "type": "function"
-      },
+    },
       {
         "inputs": [],
         "name": "_barterCount",
@@ -291,14 +291,16 @@ export const executeBarter = async (id, signer, targetLength) => {
 
     const exchangeContract = new ethers.Contract(exchangeAddress, exchangeAbi, signer);
     const barter = await exchangeContract.barters(id);
+    console.log(barter);
     const targetNFTAddress = barter[1];
     const targetNFTContract = new ethers.Contract(targetNFTAddress, nftAbi, signer);
     
     const tx_ = await targetNFTContract.setApprovalForAll(exchangeAddress, true);
     await tx_.wait();
     console.log("Approval set");
+    console.log(id, targetIds);
 
-    const tx = await exchangeContract.fulfilBarter(id, targetIds);
+    const tx = await exchangeContract.fulfilBarter(id, targetIds, {gasLimit: 30000});
     await tx.wait();
     console.log("Barter Completed");
 }

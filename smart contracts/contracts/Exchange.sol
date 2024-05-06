@@ -103,7 +103,7 @@ contract Exchange {
     }
 
 // isApproved(msg.sender, offeredIds, offeredNFT)
-    function createBarter(address targetNFT, address offeredNFT, uint256[] calldata _offeredIds, uint256 targetNumber) external  {
+    function createBarter(address targetNFT, address offeredNFT, uint256[] calldata _offeredIds, uint256 targetNumber) external isApproved(msg.sender, offeredNFT) {
         uint256 id = _barterCount.current();
         barters[id].lister = msg.sender;
         barters[id].targetNFT = targetNFT;
