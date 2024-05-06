@@ -1,6 +1,6 @@
 # Antagi
 
-live link - https://chain-quests.vercel.app/
+<!-- live link -  -->
 
 > ## Table of Contents
 
@@ -9,7 +9,7 @@ live link - https://chain-quests.vercel.app/
 -   [How it works](#How-it-works)
 -   [Technologies Used](#technologies-used)
     -   [Smart Contract](#Solidity-smart-contracts)
-    -   [Shardeum Testnet](#Shardeum-Testnet)
+    -   [Canto Testnet](#Canto-Testnet)
 #
 
 > ## Problem-statement
@@ -31,19 +31,19 @@ For AMM: User can create a pool just like in an ERC-20 decetralized exchange, th
 | <b><u>Stack</u></b>      | <b><u>UsageSummary</u></b>                           |
 | :----------------------- | :--------------------------------------------------- |
 | **`Solidity`**           | Smart contract                                       |
-| **`Shardeum Testnet`**   | Deploying smart contracts                            |
+| **`Canto Testnet`**   | Deploying smart contracts                            |
 | **`Next.js`**            | Frontend                                             |
 
 -   ### **Solidity smart contracts**
 
-    The  smart contracts can be found [here](https://github.com/NatX223/Antagi/tree/main/smart%20contracts)
+    The  smart contracts can be found [here](https://github.com/NatX223/AntagiSwap/tree/main/smart%20contracts)
 
     -   **Exchange Contract** The exchange contract serves as the central hub for managing all NFT listings, auctions and barter trades created on the platform. It 
     utilizes the OpenZeppelin Counters contract and defines various structs to monitor giveaway balances. Users can leverage the 
     contract's functionality to create barter trades by calling the createBarter function. This establishes a systematic and 
-    secure approach to organizing and tracking trades within the platform. The exchange contract code can be found [here](https://github.com/NatX223/Antagi/blob/main/smart%20contracts/contracts/Exchange.sol). The deployed address of the Exchange contract 
-    on Shardeum Hackathon testnet is 0x595CeE49356f6260D9D3290f7C052183260314ef
-    -   **AMM ContractS** The AMM contracts consist of the Pair, Factory, Bonding Curve and Router contracts. All these contracts handle the creation of pools, addition and removal of Liquidity as well as swapping of NFTs (both buy and sell) [here](https://github.com/NatX223/Antagi/tree/main/smart%20contracts). The deployed addresses of the AMM contracts on Shardeum Hackathon testnet can be found [here] (https://github.com/NatX223/Antagi/blob/main/deploymentAddresses.txt)
+    secure approach to organizing and tracking trades within the platform. The exchange contract code can be found [here](https://github.com/NatX223/AntagiSwap/blob/main/smart%20contracts/contracts/Exchange.sol). The deployed address of the Exchange contract 
+    on Canto testnet is 0x595CeE49356f6260D9D3290f7C052183260314ef
+    -   **AMM ContractS** The AMM contracts consist of the Pair, Factory, Bonding Curve and Router contracts. All these contracts handle the creation of pools, addition and removal of Liquidity as well as swapping of NFTs (both buy and sell) [here](https://github.com/NatX223/AntagiSwap/tree/main/smart%20contracts). The deployed addresses of the AMM contracts on Canto testnet can be found [here] (https://github.com/NatX223/AntagiSwap/blob/main/deploymentAddresses.txt)
 
     -   **How to run** clone the repo, enter the smart contracts folder and download the npm packages by running:
     ```bash
@@ -53,12 +53,12 @@ For AMM: User can create a pool just like in an ERC-20 decetralized exchange, th
     ```
     configure the hardhat.config file(default set to mumbai) then deploy to any chain of choice of using the commands
     ```bash
-    npx hardhat run --network <your-network> scripts/deployExchange.js
+    npx hardhat run --network Canto scripts/deployExchange.js
     ```
 
--   ### **Shardeum-Testnet**
+-   ### **Canto-Testnet**
 
-    - The smart contracts were deployed on the Shardeum-Testnet and all deployed contract addresses can be found [here] (https://github.com/NatX223/Antagi/blob/main/deploymentAddresses.txt)
+    - The smart contracts were deployed on the Canto-Testnet and all deployed contract addresses can be found [here] (https://github.com/NatX223/AntagiSwap/blob/main/deploymentAddresses.txt)
 
 -   ### **Frontend**
 
