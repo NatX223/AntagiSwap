@@ -18,17 +18,17 @@ import {
 } from 'wagmi/chains';
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
-const shardeumHack = {
-  id: 8082,
-  name: 'Shardeum',
+const cantoTestnet = {
+  id: 7701,
+  name: 'Canto Testnet',
   iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png',
   iconBackground: '#fff',
-  nativeCurrency: { name: 'Shardeum', symbol: 'SHM', decimals: 18 },
+  nativeCurrency: { name: 'Canto', symbol: 'CNT', decimals: 18 },
   rpcUrls: {
-    default: { http: ['http://18.185.76.64:8080'] },
+    default: { http: ['https://canto-testnet.plexnode.wtf'] },
   },
   blockExplorers: {
-    default: { name: 'shardexplorer', url: 'https://explorer-hackathon.shardeum.org/' },
+    default: { name: 'cantoexplorer', url: 'https://testnet.tuber.build/' },
   },
   testnet: true
 };
@@ -47,7 +47,7 @@ const connectors = connectorsForWallets(
 );
 
 const config = createConfig({
-  chains: [shardeumHack],
+  chains: [cantoTestnet],
   connectors,
   ssr: true
 })

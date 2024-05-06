@@ -70,7 +70,35 @@ const exchangeAbi = [
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
-      },
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "targetNFT",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "offeredNFT",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_offeredIds",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "targetNumber",
+          "type": "uint256"
+        }
+      ],
+      "name": "createBarter",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
 ]
 
 const nftAbi = [
@@ -123,13 +151,68 @@ const nftAbi = [
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          }
+        ],
+        "name": "ownerOf",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
       }
 ]
 
-const providerUrl = "http://18.185.76.64:8080";
+const providerUrl = "https://canto-testnet.plexnode.wtf";
 const provider = new ethers.JsonRpcProvider(providerUrl);
 
-const exchangeAddress = "0x595CeE49356f6260D9D3290f7C052183260314ef";
+const exchangeAddress = "0xFD986EFd85B1F0EaeeCb7cD12f629DF3951e5360";
+
+const nftAddresses = ["0xb7083e647240AeD427b6869A5E84962B4DDEc30c", "0xB07Ad6e27d4Cf9a1D2bCf965F1eC66B20276c312"];
+
+export const getUserNFTs = async (address) => {
+  var userNFTs = [];
+  // run through all contracts
+  for (let i = 0; i < nftAddresses.length; i++) {
+    const nftContract = new ethers.Contract(nftAddresses[i], nftAbi, provider);
+    for (let j = 0; j < 3; j++) {
+      const owner = await nftContract.ownerOf(j);
+      console.log(owner);
+      const uri = await nftContract.tokenURI(j);
+      if (address === owner) {
+        const nft = {
+          id: j,
+          nftAddress: nftAddresses[i],
+          src: uri
+        }
+        userNFTs.push(nft);
+        console.log(nft);
+      } else {
+        continue;
+      }
+    }
+  }
+  return userNFTs;
+} 
+
+export const createBarter = async (targetNFTAddress, offeredNFTAddress, offeredIds, targetNumber, signer) => {
+  const offeredNFTContract = new ethers.Contract(offeredNFTAddress, nftAbi, signer);
+  await offeredNFTContract.setApprovalForAll(exchangeAddress, true);
+  const exchangeContract = new ethers.Contract(exchangeAddress, exchangeAbi, signer);
+  const createTx = await exchangeContract.createBarter(targetNFTAddress, offeredNFTAddress, offeredIds, targetNumber);
+  await createTx.wait();
+  console.log();
+}
 
 export const getBarters = async () => {
     var barters = [];

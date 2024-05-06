@@ -1,42 +1,55 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useModal } from "utils/ModalContext";
 import { FiX } from "react-icons/fi";
 import Button from "../../button";
 import MintModalStyleWrapper from "./Create.style";
 import hoverShape from "assets/images/icon/hov_shape_L.svg";
-import { collections } from "src/assets/data/collectionsData";
+import { createBarter, getUserNFTs } from "src/utils/app";
+import { useAccount } from "wagmi";
+import { useEthersSigner } from "src/utils/adapter";
 
 const CreateModal = ({ id, title }) => {
-  // get user NFTs
-  // display them
-  
-  const { CreateModalHandle } = useModal();
-
-  const images = collections[0].images;
-  // get images from the users NFTs
-  // construct selected nfts
-  // call function
-
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedCounter, setSelectedCounter] = useState(0);
-  const [price, setPrice] = useState(0);
+
+  const { CreateModalHandle } = useModal();
+  const { address, isConnected } = useAccount();
+  const signer = useEthersSigner();
+
+  const [loading, setLoading] = useState(true);
+  const [userNFTs, setuserNFTs] = useState([]);
+
+  const [targetCollection, setTargetCollection] = useState('');
+  const [amount, setAmount] = useState(1);
+
+  const create = async() => {
+    const Ids = selectedImages.map(obj => obj.id);
+    await createBarter(targetCollection, selectedImages[0].nftAddress, Ids, amount, signer)
+    console.log("done");
+  }
+
+  useEffect(() => {
+    const fetchUserNFTs = async () => {
+      const nfts = await getUserNFTs(address);
+      setuserNFTs(nfts);
+      setLoading(false);
+    };
+    fetchUserNFTs();
+  }, []);
 
   const handleClick = (image, e) => {
     e.stopPropagation();
     const index = selectedImages.indexOf(image);
     if (index === -1) {
       setSelectedImages([...selectedImages, image]);
-      console.log(selectedImages);
-      setSelectedCounter(selectedCounter + 1);
+      setSelectedCounter(selectedImages.length + 1);
       console.log(selectedCounter);
-      setPrice(selectedCounter + 1); // Perform your operation here
     } else {
       const updatedSelectedImages = [...selectedImages];
       updatedSelectedImages.splice(index, 1);
       
       setSelectedImages(updatedSelectedImages);
-      setSelectedCounter(selectedCounter - 1);
-      setPrice(selectedCounter - 1); // Perform your operation here
+      setSelectedCounter(selectedImages.length - 1);
     }
   };
   
@@ -55,9 +68,9 @@ const CreateModal = ({ id, title }) => {
 <div className="modal_body text-center">
   <div className="col-lg-9 col-md-8">
     <div className="row barter_row">
-      {images?.map((image, idx) => (
+      {userNFTs?.map((image, idx) => (
         <div key={idx} className="col-lg-3 col-sm-6 col-12">
-          <img onClick={(e) => handleClick(image, e)} src={image} alt="image" style={{ border: selectedImages.includes(image) ? '2px solid blue' : '2px solid transparent' }} />
+          <img onClick={(e) => handleClick(image, e)} src={image.src} alt="image" style={{ border: selectedImages.includes(image) ? '2px solid blue' : '2px solid transparent' }} />
         </div>
       ))}
     </div>
@@ -72,17 +85,27 @@ const CreateModal = ({ id, title }) => {
       </li>
       <li>
         <h5>Target Collection</h5>
-        <input type="text" placeholder="Enter address" />
+        <input
+        type="text"
+        placeholder="Enter address"
+        value={targetCollection}
+        onChange={(e) => setTargetCollection(e.target.value)}
+      />
       </li>
       <li>
         <h5>Amount</h5>
-        <input type="number" placeholder="" />
+        <input
+        type="number"
+        placeholder=""
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+      />
       </li>
     </ul>
   </div>
   <div className="modal_mint_btn">
-    <Button lg variant="mint">
-      Create
+    <Button lg variant="mint" >
+      <p onClick={create}> Create </p>
     </Button>
   </div>
 </div>
