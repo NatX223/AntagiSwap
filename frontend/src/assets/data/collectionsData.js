@@ -151,14 +151,16 @@ export const barterTrades = [
 export const collections = [
   {
     id: 0,
-    image: "https://firebasestorage.googleapis.com/v0/b/antagi-688b2.appspot.com/o/ShardVerse%2F0.jpg?alt=media&token=9af3108d-0c64-486c-a7be-4d10a7254b8b",
+    image: "https://th.bing.com/th/id/OIG3.rhAda4KFsO1LwuVILtfu?pid=ImgGn",
     images: [
-      "https://firebasestorage.googleapis.com/v0/b/antagi-688b2.appspot.com/o/ShardVerse%2F0.jpg?alt=media&token=9af3108d-0c64-486c-a7be-4d10a7254b8b",
-      "https://firebasestorage.googleapis.com/v0/b/antagi-688b2.appspot.com/o/ShardVerse%2F2.jpg?alt=media&token=e1d7be4f-a144-435f-b70e-442c3d733011"
+      {id: 0, src: "https://th.bing.com/th/id/OIG3.rhAda4KFsO1LwuVILtfu?pid=ImgGn"},
+      {id: 1, src: "https://th.bing.com/th/id/OIG3.suBRQgyBQGRlFAKcpJgl?pid=ImgGn"},
+      {id: 2, src: "https://th.bing.com/th/id/OIG3.Gzxwt_XFoNuc6eJ4maOp?pid=ImgGn"},
+      {id: 3, src: "https://th.bing.com/th/id/OIG3.y3YxGqScdq1AasoqnGwe?pid=ImgGn"}
     ],
-    name: "ShardVerse",
+    name: "ArcAngel",
     nftLiquidity: 4,
-    shrLiquidity: 90
+    CANTOLiquidity: 0.1
   },
 ]
 

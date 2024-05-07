@@ -5,7 +5,12 @@ import Button from "../../button";
 import MintModalStyleWrapper from "./AMM.style";
 import hoverShape from "assets/images/icon/hov_shape_L.svg";
 import { collections } from "src/assets/data/collectionsData";
+import { buyNFT } from "src/utils/app";
+import { useEthersSigner } from "src/utils/adapter";
+
 const AMMModal = ({ id }) => {
+  const signer = useEthersSigner();
+
   const { AMMModalHandle } = useModal();
   const images = collections[id].images;
 
@@ -21,32 +26,22 @@ const AMMModal = ({ id }) => {
       console.log(selectedImages);
       setSelectedCounter(selectedCounter + 1);
       console.log(selectedCounter);
-      setPrice(selectedCounter + 1); // Perform your operation here
+      setPrice(selectedCounter / 10); // Perform your operation here
     } else {
       const updatedSelectedImages = [...selectedImages];
       updatedSelectedImages.splice(index, 1);
       
       setSelectedImages(updatedSelectedImages);
       setSelectedCounter(selectedCounter - 1);
-      setPrice(selectedCounter - 1); // Perform your operation here
+      setPrice(selectedCounter / 10); // Perform your operation here
     }
   };
-
-  // const handleClick = (image, e) => {
-  //   e.stopPropagation();
-  //   setSelectedImages((prevSelectedImages) => {
-  //     const index = prevSelectedImages.indexOf(image);
-  //     if (index === -1) {
-  //       setSelectedCounter(prevCounter => prevCounter + 1);
-  //       return [...prevSelectedImages, image];
-  //     } else {
-  //       setSelectedCounter(prevCounter => prevCounter - 1);
-  //       return prevSelectedImages.filter((selectedImage) => selectedImage !== image);
-  //     }
-  //   });
-  //   setPrice((prevPrice) => prevPrice + 1); // Update price based on the selected counter
-  // };
   
+  const buy = async() => {
+    await buyNFT(selectedImages, signer);
+    console.log("completed");
+  }
+
   return (
     <>
       <MintModalStyleWrapper className="modal_overlay">
@@ -63,7 +58,7 @@ const AMMModal = ({ id }) => {
                 <div className="row barter_row">
                   {images?.map((image, idx) => (
                     <div key={idx} className="col-lg-3 col-sm-6 col-12">
-                      <img onClick={(e) => handleClick(image, e)} src={image} alt="image" style={{ border: selectedImages.includes(image) ? '2px solid blue' : '2px solid transparent' }} />
+                      <img onClick={(e) => handleClick(image, e)} src={image.src} alt="image" style={{ border: selectedImages.includes(image) ? '2px solid blue' : '2px solid transparent' }} />
                     </div>
                   ))}
                 </div>
@@ -78,12 +73,12 @@ const AMMModal = ({ id }) => {
                   </li>
                   <li>
                     <h5>Price</h5>
-                    <h5>{price} <span> SHM </span></h5>
+                    <h5>{price} <span> CANTO </span></h5>
                   </li>
                 </ul>
               </div>
               <div className="modal_mint_btn">
-                <Button lg variant="mint">
+                <Button lg variant="mint" onClick={buy}>
                   Buy
                 </Button>
               </div>

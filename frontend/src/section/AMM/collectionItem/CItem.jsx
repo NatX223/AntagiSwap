@@ -1,6 +1,6 @@
 import ProductStyleWrapper from "./CItem.style";
 
-const Product = ({ image, name, nftLiquidity, shrLiquidity }) => {
+const Product = ({ image, name, nftLiquidity, CANTOLiquidity }) => {
   return (
     <ProductStyleWrapper>
       <div className="product_thumb">
@@ -19,7 +19,7 @@ const Product = ({ image, name, nftLiquidity, shrLiquidity }) => {
         <p>
           Liquidity:
           <span>
-            {shrLiquidity} <span> SHM </span>
+            {CANTOLiquidity} <span> CANTO </span>
           </span>
         </p>
         <p>

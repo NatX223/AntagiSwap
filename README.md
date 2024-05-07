@@ -24,7 +24,7 @@ Solution: The concept of trading card games was the inspiration of the project. 
 
 For Barter: The first step in this process is going to the create tab of the app and selecting barter, then you will be asked to select the NFTs you want to put up for barter and then sign the prompted transaction, the barter will recorded in a smart contract and thus be public for everyone to see and interact with. To fulfil a barter trade, a user needs to enter the barter section of the app, where they will see all available barter trades yet to be fulfilled, they can then select any one that contains the NFTs they want and exchange their NFTs.
 
-For AMM: User can create a pool just like in an ERC-20 decetralized exchange, then they will be required to put in liquidity into a pool, the amount of NFTs and native coins (SHM) put into a pool determines the price of the NFT (the constant product bonding curve - XYK was used). To swap SHM to NFTs, the user need to select a pool then select NFTs they want from the specified pool, the amount of SHM to be paid will then be calculated and the user can sign the prompted transaction and the NFTs will be transfered from the pool to the user and the SHM goes in the opposite direction - from the user to the pool. using the AMM a user can also make direct NFT to NFT swaps, using a pool route by swapping an NFT for SHM, then swapping the SHM for another NFT. 
+For AMM: User can create a pool just like in an ERC-20 decetralized exchange, then they will be required to put in liquidity into a pool, the amount of NFTs and native coins (CANTO) put into a pool determines the price of the NFT (the constant product bonding curve - XYK was used). To swap CANTO to NFTs, the user need to select a pool then select NFTs they want from the specified pool, the amount of CANTO to be paid will then be calculated and the user can sign the prompted transaction and the NFTs will be transfered from the pool to the user and the CANTO goes in the opposite direction - from the user to the pool. using the AMM a user can also make direct NFT to NFT swaps, using a pool route by swapping an NFT for CANTO, then swapping the CANTO for another NFT. 
 
 > ## Technologies Used
 
@@ -42,7 +42,7 @@ For AMM: User can create a pool just like in an ERC-20 decetralized exchange, th
     utilizes the OpenZeppelin Counters contract and defines various structs to monitor giveaway balances. Users can leverage the 
     contract's functionality to create barter trades by calling the createBarter function. This establishes a systematic and 
     secure approach to organizing and tracking trades within the platform. The exchange contract code can be found [here](https://github.com/NatX223/AntagiSwap/blob/main/smart%20contracts/contracts/Exchange.sol). The deployed address of the Exchange contract 
-    on Canto testnet is 0x595CeE49356f6260D9D3290f7C052183260314ef
+    on Canto testnet is 0x4971C16Ad4Dd04ED489A249145A27F1d42af2420
     -   **AMM ContractS** The AMM contracts consist of the Pair, Factory, Bonding Curve and Router contracts. All these contracts handle the creation of pools, addition and removal of Liquidity as well as swapping of NFTs (both buy and sell) [here](https://github.com/NatX223/AntagiSwap/tree/main/smart%20contracts). The deployed addresses of the AMM contracts on Canto testnet can be found [here] (https://github.com/NatX223/AntagiSwap/blob/main/deploymentAddresses.txt)
 
     -   **How to run** clone the repo, enter the smart contracts folder and download the npm packages by running:

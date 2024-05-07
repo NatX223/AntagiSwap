@@ -397,12 +397,12 @@ const routerABI = [
 const providerUrl = "https://canto-testnet.plexnode.wtf";
 const provider = new ethers.JsonRpcProvider(providerUrl);
 
-const exchangeAddress = "0xFD986EFd85B1F0EaeeCb7cD12f629DF3951e5360";
-const routerAddress = "0xFF77Df6c148a94440caF3C6a6865a058E1f1F27B";
-const factoryAddress = "0x0058e73DE38A00a870beEA2b0185432C9b01eA61";
-const curveAddress = "0xa4480565af9a87770FDa24c6eDE28D00E7881b3a";
+const exchangeAddress = "0x4971C16Ad4Dd04ED489A249145A27F1d42af2420";
+const routerAddress = "0xefa3cF0d51f17cD823799E03f72BcE2a2DE61083";
+const factoryAddress = "0xd5d8CAF0B742CE82e9A3C1D3fA2278fdF5b93DaF";
+const curveAddress = "0x068307a6645465468a411a09AB8fde651567B37D";
 
-const nftAddresses = ["0xb7083e647240AeD427b6869A5E84962B4DDEc30c", "0xB07Ad6e27d4Cf9a1D2bCf965F1eC66B20276c312"];
+const nftAddresses = ["0x434aD648975CBd38dFcc7381E0b2b15079bB7dE1", "0xe462B2Bd44853a3Ab56b5b0C7Db76Bc27306f19E", "0x5474C94152DFeB642607758dECF156f590D092dD", "0xfAE79F8782dD49c379676AE9F928bE3C444014E3"];
 
 export const createPool = async(ids, nftAddress, liquidity, fee, signer) => {
   const userAddress = await signer.getAddress();
@@ -477,12 +477,14 @@ export const getBarters = async () => {
         const barter = await exchangeContract.barters(i);
         const offeredNFTAddress = barter[3];
         const targetNFTAddress = barter[1];
+        const isSold = barter[4];
         const offeredNFTContract = new ethers.Contract(offeredNFTAddress, nftAbi, provider);
         const targetNFTContract = new ethers.Contract(targetNFTAddress, nftAbi, provider);
         const nftImage = await offeredNFTContract.tokenURI(0);
         const offeredNftName = await offeredNFTContract.name();
         const targetNftName = await targetNFTContract.name();
-        const _barter = {
+        if (!isSold) {
+          const _barter = {
             image: nftImage,
             offeredCollection: offeredNftName,
             targetCollection: targetNftName,
@@ -490,6 +492,9 @@ export const getBarters = async () => {
             barterId: i
         }
         barters.push(_barter);
+        } else {
+          continue;
+        }
     }
     console.log(barters);
     return barters;
@@ -557,4 +562,27 @@ export const executeBarter = async (id, signer, targetLength) => {
     const tx = await exchangeContract.fulfilBarter(id, targetIds, {gasLimit: 30000});
     await tx.wait();
     console.log("Barter Completed");
+}
+
+export const buyNFT = async(ids_, signer) => {
+  const ids = ids_.map(obj => obj.id);
+  const poolAddress = "0xc10C365ec87e77C9cc20cF32005BA37570fC5133";
+  const userAddress = await signer.getAddress();
+
+  // calculate the buy price for each pool
+  const curveContract = new ethers.Contract(deploymentAddresses.curve[chainId], curveABI, signer);
+
+  // get reserve0 and reserve1
+  const pairContract = new ethers.Contract(poolAddress, pairABI, signer);
+  const reserve0 = await pairContract.reserve0();
+  const reserve1 = await pairContract.reserve1();
+  console.log(reserve0, reserve1);
+
+  const price = await curveContract.getBuyPriceSingle(ids.length, reserve0, reserve1, poolAddress);
+  console.log(price);
+
+  const routerContract = new ethers.Contract(routerAddress, routerABI, signer);
+  const buyTx = await routerContract.swapETHforNFT(ids, poolAddress, userAddress, {value: price});
+  await buyTx.wait();
+  console.log("bought");
 }

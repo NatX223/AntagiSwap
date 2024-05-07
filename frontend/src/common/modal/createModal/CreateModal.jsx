@@ -25,7 +25,7 @@ const CreateModal = ({ id, title }) => {
   const [liquidity, setLiquidity] = useState('');
   const [fee, setFee] = useState(1);
 
-  const createBarter = async() => {
+  const _createBarter = async() => {
     const Ids = selectedImages.map(obj => obj.id);
     await createBarter(targetCollection, selectedImages[0].nftAddress, Ids, amount, signer)
     console.log("done");
@@ -113,7 +113,7 @@ const CreateModal = ({ id, title }) => {
     </ul>
   </div>
   <div className="modal_mint_btn">
-    <Button lg variant="mint" onClick={createBarter}>
+    <Button lg variant="mint" onClick={_createBarter}>
       Create
     </Button>
   </div>

@@ -51,13 +51,13 @@ const BarterTradeModal = ({ id, targetCollection, offeredCollection }) => {
                   <p> loading... </p>
                 ) : (
                   <div className="row barter_row">
-                  {barter.offeredImages?.map((image, idx) => (
+                  {barter.targetImages?.map((image, idx) => (
                     <div key={idx} className="col-lg-2 col-sm-6 col-12">
                       <img src={image} alt="image" />
                     </div>
                   ))}
                   <img className="col-lg-1 col-sm-6 col-12" src={arrow.src} alt="image" />
-                  {barter.targetImages?.map((image, idx) => (
+                  {barter.offeredImages?.map((image, idx) => (
                     <div key={idx} className="col-lg-2 col-sm-6 col-12">
                       <img src={image} alt="image" />
                     </div>
